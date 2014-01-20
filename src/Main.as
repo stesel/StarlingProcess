@@ -11,7 +11,6 @@ package
 	 * @author Leonid Trofimchuk
 	 */
 	[SWF(width = "800", height = "600", backgroundColor = "#000000", frameRate = "30")]
-	
 	public class Main extends Sprite 
 	{
 		private var stats:Stats;
@@ -19,16 +18,9 @@ package
 		
 		public function Main():void 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
 			// entry point
-			
+			this.graphics.lineStyle(2, 0xff0000);
+			this.graphics.drawRect(0, 0, 800, 600);
 			stats = new Stats();
 			addChild(stats);
 			

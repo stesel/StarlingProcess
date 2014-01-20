@@ -1,6 +1,7 @@
 package game 
 {
 	import starling.display.Sprite;
+	import starling.events.Event;
 	
 	/**
 	 * ...
@@ -11,7 +12,13 @@ package game
 		
 		public function Game() 
 		{
-			
+			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function onAddedToStage(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			trace("Start Starling");
 		}
 		
 	}
