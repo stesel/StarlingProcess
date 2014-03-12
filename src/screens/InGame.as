@@ -4,6 +4,7 @@ package screens
 	import flash.sampler.NewObjectSample;
 	import natives.Native;
 	import objects.Bullet;
+	import objects.Enemy;
 	import objects.GameBackground;
 	import objects.Hero;
 	import objects.Sight;
@@ -22,6 +23,8 @@ package screens
 		private var background:GameBackground;
 		private var hero:Hero;
 		private var sight:Sight;
+		
+		private var enemies:Vector.<Enemy>
 		
 		private var sounds:Sounds;
 		
@@ -59,7 +62,21 @@ package screens
 			
 			sounds = new Sounds();
 			
+			initEnemies();
 			stage.addEventListener(TouchEvent.TOUCH, stage_touch);
+		}
+		
+		private function initEnemies():void 
+		{
+			enemies = new Vector.<Enemy>();
+			
+			var count:int = 10;
+			for (var i:int = 0; i < count; i++ )
+			{
+				var enemy:Enemy = new Enemy(hero);
+				this.addChildAt(enemy, this.getChildIndex(hero));
+				enemies.push(enemy);
+			}
 			
 		}
 		

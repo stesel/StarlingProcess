@@ -15,7 +15,7 @@ package objects
 	public class Hero extends Sprite 
 	{
 		private var heroArt:MovieClip;
-		private var controller:HeroController;
+		public var controller:HeroController;
 		
 		public function Hero() 
 		{
