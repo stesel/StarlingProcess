@@ -84,6 +84,7 @@ package components
 		{
 			sExplosionChannel = null;
 		}
+		
 		public function onCollision():void
 		{
 			sCollisionChannel = soundCollision.play(0, 0);

@@ -1,6 +1,8 @@
 package objects 
 {
+	import events.HeroEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
@@ -27,6 +29,7 @@ package objects
 		private var maxY:Number;
 		
 		private var _active:Boolean;
+		private var rectangle:Rectangle;
 		
 		
 		public function Enemy(hero:Hero, speed:int = 3) 
@@ -86,6 +89,12 @@ package objects
 			replace();
 		}
 		
+		public function collideRect():Rectangle
+		{
+			rectangle = enemyArt.getBounds(this.parent);
+			return rectangle;
+		}
+		
 		private function replace():void 
 		{
 			var rotationRandom:int = Math.round(Math.random() * 3);
@@ -136,8 +145,6 @@ package objects
 				deactivate();
 				
 			checkHeroCollision();
-			
-			//bulletControll();
 		}
 		
 		private function checkHeroCollision():void
@@ -147,13 +154,16 @@ package objects
 				
 			var deltaX:Number = Math.abs(this.x - hero.x);
 			var deltaY:Number = Math.abs(this.y - hero.y);
+			
+			var enemyRect:Rectangle = this.collideRect();
+			var heroRect:Rectangle = hero.collideRect();
 				
-			if(deltaX <= (enemyArt.width + hero.width) / 2 && deltaY <= (enemyArt.height + hero.height) / 2)
+			if(deltaX <= (enemyRect.width + heroRect.width) / 2 && deltaY <= (enemyRect.height + heroRect.height) / 2 && !hero.relax)
 			{
-				hero.controller.addSpeed(2*speedX, 2*speedY);
+				hero.controller.addSpeed(2 * speedX, 2 * speedY);
+				hero.dispatchEvent( new HeroEvent(HeroEvent.COLLIDED) );
 			}	
 		}
-		
 		
 		override public function get width():Number { return enemyArt.width };
 		override public function get height():Number { return enemyArt.height };

@@ -1,7 +1,9 @@
 package screens 
 {
 	import components.Sounds;
+	import events.HeroEvent;
 	import flash.sampler.NewObjectSample;
+	import flash.utils.setTimeout;
 	import natives.Native;
 	import objects.Bullet;
 	import objects.Enemy;
@@ -52,6 +54,7 @@ package screens
 			hero = new Hero();
 			hero.x = stage.stageWidth / 2;
 			hero.y = stage.stageHeight / 2;
+			hero.addEventListener(HeroEvent.COLLIDED, heroCollided);
 			
 			sight = new Sight();
 			sight.x = Native.stage.mouseX;
@@ -66,11 +69,12 @@ package screens
 			stage.addEventListener(TouchEvent.TOUCH, stage_touch);
 		}
 		
+		
 		private function initEnemies():void 
 		{
 			enemies = new Vector.<Enemy>();
 			
-			var count:int = 10;
+			var count:int = 5;
 			for (var i:int = 0; i < count; i++ )
 			{
 				var enemy:Enemy = new Enemy(hero);
@@ -78,6 +82,20 @@ package screens
 				enemies.push(enemy);
 			}
 			
+		}
+		
+		private function heroCollided(e:HeroEvent):void 
+		{
+			hero.relax = true;
+			hero.alpha = 0.6;
+			sounds.onCollision();
+			setTimeout(restoreDamage, 2000);
+		}
+		
+		private function restoreDamage():void 
+		{
+			hero.relax = false;
+			hero.alpha = 1;
 		}
 		
 		private function stage_touch(e:TouchEvent):void 
