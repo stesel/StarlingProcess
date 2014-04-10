@@ -1,6 +1,8 @@
 package objects 
 {
 	import components.Assets;
+	import components.Sounds;
+	import flash.geom.Rectangle;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -17,11 +19,15 @@ package objects
 		private var speedX:Number;
 		private var speedY:Number;
 		
-		public function Bullet(owner:Sprite) 
+		private var targets:Vector.<Enemy>;
+		private var sounds:Sounds;
+		
+		public function Bullet(owner:Sprite, targets:Vector.<Enemy>, sounds:Sounds) 
 		{
 			this.owner = owner;
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStage)
-			
+			this.targets = targets
+			this.sounds = sounds;
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStage);	
 		}
 		
 		private function addedToStage(e:Event):void 
@@ -51,6 +57,31 @@ package objects
 		{
 			this.x += speedX;
 			this.y += speedY;
+			
+			checkHit();
+		}
+		
+		private function checkHit():void 
+		{
+			if (!targets && !targets.length) return;
+			
+			for each (var t:Enemy in targets)
+			{
+				hitTestPoint(t);
+			}
+		}
+		
+		private function hitTestPoint(t:Enemy):void 
+		{
+			var bounds:Rectangle = t.collideRect();
+			
+			if ( t.activated && (this.x > bounds.x && this.x < bounds.x + bounds.width) && (this.y > bounds.y && this.y < bounds.y + bounds.height) )
+			{
+				sounds.onExplosion();
+				t.destroy();
+				this.removeChild(image);
+				stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
+			}
 		}
 		
 	}

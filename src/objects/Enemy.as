@@ -91,8 +91,15 @@ package objects
 		
 		public function collideRect():Rectangle
 		{
+			if (!this.contains(enemyArt)) { return new Rectangle(0, 0, 0, 0); };
 			rectangle = enemyArt.getBounds(this.parent);
 			return rectangle;
+		}
+		
+		public function destroy():void
+		{
+			disable();
+			this.removeChild(enemyArt);
 		}
 		
 		private function replace():void 
@@ -167,6 +174,8 @@ package objects
 		
 		override public function get width():Number { return enemyArt.width };
 		override public function get height():Number { return enemyArt.height };
+		
+		public function get activated():Boolean { return _active };
 	}
 
 }

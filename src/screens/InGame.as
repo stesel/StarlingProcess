@@ -26,7 +26,7 @@ package screens
 		private var hero:Hero;
 		private var sight:Sight;
 		
-		private var enemies:Vector.<Enemy>
+		private var enemies:Vector.<Enemy>;
 		
 		private var sounds:Sounds;
 		
@@ -103,7 +103,7 @@ package screens
 			var touch:Touch = e.getTouch(stage, TouchPhase.BEGAN);
 			if (touch)
 			{
-				var bullet:Bullet = new Bullet(hero);
+				var bullet:Bullet = new Bullet(hero, enemies, sounds);
 				this.addChildAt(bullet, this.getChildIndex(hero) - 1);
 				sounds.onShoot(2);
 				//sounds.onExplosion();
