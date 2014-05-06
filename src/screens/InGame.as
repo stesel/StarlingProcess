@@ -27,6 +27,7 @@ package screens
 		private var sight:Sight;
 		
 		private var enemies:Vector.<Enemy>;
+		private var enemiesContainer:Sprite;
 		
 		private var sounds:Sounds;
 		
@@ -73,15 +74,18 @@ package screens
 		private function initEnemies():void 
 		{
 			enemies = new Vector.<Enemy>();
+			enemiesContainer = new Sprite();
+			this.addChildAt(enemiesContainer, this.getChildIndex(hero))
 			
-			var count:int = 5;
+			var count:int = 10;
 			for (var i:int = 0; i < count; i++ )
 			{
 				var enemy:Enemy = new Enemy(hero);
-				this.addChildAt(enemy, this.getChildIndex(hero));
+				enemiesContainer.addChild(enemy);
 				enemies.push(enemy);
 			}
 			
+			sight.attachEnemies(enemiesContainer);		
 		}
 		
 		private function heroCollided(e:HeroEvent):void 

@@ -1,6 +1,8 @@
 package objects 
 {
 	import components.Assets;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import natives.Native;
 	import starling.core.Starling;
@@ -17,6 +19,7 @@ package objects
 		static public const ON_TARGET	:int = 1;
 		
 		private var sightArt:MovieClip;
+		private var enemies:Sprite;
 		
 		public function Sight() 
 		{
@@ -48,6 +51,32 @@ package objects
 		{
 			this.x = Native.stage.mouseX;
 			this.y = Native.stage.mouseY;
+			checkTarget();
+		}
+		
+		private function checkTarget():void 
+		{
+			if (!enemies) return;
+			hitTestPoint();
+		}
+		
+		private function hitTestPoint():void 
+		{
+			if (enemies.hitTest(new Point(this.x, this.y), true))
+			{
+				sightArt.currentFrame = ON_TARGET;
+				trace("onTarget");
+			}
+			else
+			{
+				sightArt.currentFrame = OFF_TARGET;
+				trace("OffTarget");
+			}
+		}
+		
+		public function attachEnemies(enemies:Sprite):void 
+		{
+			this.enemies = enemies;
 		}
 		
 	}

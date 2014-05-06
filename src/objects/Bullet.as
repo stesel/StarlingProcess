@@ -63,7 +63,7 @@ package objects
 		
 		private function checkHit():void 
 		{
-			if (!targets && !targets.length) return;
+			if (!targets || !targets.length) return;
 			
 			for each (var t:Enemy in targets)
 			{
