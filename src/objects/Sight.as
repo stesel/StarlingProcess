@@ -65,12 +65,12 @@ package objects
 			if (enemies.hitTest(new Point(this.x, this.y), true))
 			{
 				sightArt.currentFrame = ON_TARGET;
-				trace("onTarget");
+				//trace("onTarget");
 			}
 			else
 			{
 				sightArt.currentFrame = OFF_TARGET;
-				trace("OffTarget");
+				//trace("OffTarget");
 			}
 		}
 		

@@ -7,6 +7,7 @@ package screens
 	import natives.Native;
 	import objects.Bullet;
 	import objects.Enemy;
+	import objects.Explosion;
 	import objects.GameBackground;
 	import objects.Hero;
 	import objects.Sight;
@@ -81,11 +82,36 @@ package screens
 			for (var i:int = 0; i < count; i++ )
 			{
 				var enemy:Enemy = new Enemy(hero);
+				enemy.addEventListener(Enemy.DESTROY_ENEMY, onDestroyEnemy);
 				enemiesContainer.addChild(enemy);
 				enemies.push(enemy);
 			}
 			
 			sight.attachEnemies(enemiesContainer);		
+		}
+		
+		private function onDestroyEnemy(e:Event):void 
+		{
+			var enemy:Enemy = e.target as Enemy;
+			if (!enemy) return;
+			enemy.removeEventListener(Enemy.DESTROY_ENEMY, onDestroyEnemy);
+			
+			//Explosion//
+			var explosion:Explosion = new Explosion();
+			explosion.addEventListener(Explosion.REMOVE_EXPLOSION, onRemoveExplosion);
+			explosion.x = enemy.x;
+			explosion.y = enemy.y;
+			enemiesContainer.removeChild(enemy);
+			enemy = null;
+			enemiesContainer.addChild(explosion);
+		}
+		
+		private function onRemoveExplosion(e:Event):void 
+		{
+			var explosion:Explosion = e.target as Explosion;
+			if (!explosion) return;
+			enemiesContainer.removeChild(explosion);
+			explosion = null;
 		}
 		
 		private function heroCollided(e:HeroEvent):void 

@@ -15,6 +15,8 @@ package objects
 	 */
 	public class Enemy extends Sprite
 	{
+		static public const DESTROY_ENEMY:String = "destroyEnemy";
+		;
 		private var enemyArt:MovieClip;
 		
 		private var hero:Hero;
@@ -98,8 +100,10 @@ package objects
 		
 		public function destroy():void
 		{
+			dispatchEvent(new Event(Enemy.DESTROY_ENEMY));
 			disable();
 			this.removeChild(enemyArt);
+			
 		}
 		
 		private function replace():void 

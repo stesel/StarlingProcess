@@ -54,6 +54,16 @@ package components
 		static private var heroTextureAtlas:TextureAtlas;
 		static private var sightTextureAtlas:TextureAtlas;
 		
+		/////Explosion//////
+		[Embed(source="../../media/graphics/explosionSheet.png")]
+		public static const AtlasTextureExplosion:Class;
+		
+		[Embed(source="../../media/graphics/explosionSheet.xml", mimeType = "application/octet-stream")]
+		public static const AtlasXMLExplosion:Class;
+		
+		static private var explosionTextureAtlas:TextureAtlas;
+		////////////////////
+		
 		public static function getTexture(name:String):Texture
 		{
 			if (gameTextures[name] == undefined)
@@ -84,6 +94,18 @@ package components
 			}
 			return sightTextureAtlas;
 		}
+		
+		public static function getExplosionTextureAtlas():TextureAtlas
+		{
+			if (explosionTextureAtlas == null)
+			{
+				var texture:Texture = getTexture("AtlasTextureExplosion");
+				var xml:XML = new XML(new AtlasXMLExplosion());
+				explosionTextureAtlas = new TextureAtlas(texture, xml);
+			}
+			return explosionTextureAtlas;
+		}
+		
 		
 	}
 
