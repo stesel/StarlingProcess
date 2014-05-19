@@ -16,6 +16,10 @@ package screens
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
+	import starling.utils.Color;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
 	/**
 	 * ...
@@ -29,6 +33,8 @@ package screens
 		
 		private var enemies:Vector.<Enemy>;
 		private var enemiesContainer:Sprite;
+		
+		private var enemiesCount:TextField;
 		
 		private var sounds:Sounds;
 		
@@ -87,7 +93,22 @@ package screens
 				enemies.push(enemy);
 			}
 			
-			sight.attachEnemies(enemiesContainer);		
+			sight.attachEnemies(enemiesContainer);
+			
+			enemiesCount = new TextField(100, 20, "text", "Arial", 14, Color.AQUA, true);
+			enemiesCount.hAlign = HAlign.LEFT;			
+			enemiesCount.vAlign = VAlign.BOTTOM;
+			addChild(enemiesCount);
+			enemiesCount.y = stage.stageHeight - enemiesCount.height;
+			setEnemiesCount(enemies.length);
+		}
+		
+		private function setEnemiesCount(length:int):void 
+		{
+			if(length)
+				enemiesCount.text = "Enemies: " + length;
+			else
+				enemiesCount.text = "You win!";
 		}
 		
 		private function onDestroyEnemy(e:Event):void 
@@ -102,6 +123,12 @@ package screens
 			explosion.x = enemy.x;
 			explosion.y = enemy.y;
 			enemiesContainer.removeChild(enemy);
+			
+			var index:Number = enemies.indexOf(enemy);
+			if (index >-1 )
+				enemies.splice(index, 1);
+				
+			setEnemiesCount(enemies.length);
 			enemy = null;
 			enemiesContainer.addChild(explosion);
 		}
